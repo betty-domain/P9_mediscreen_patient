@@ -1,0 +1,31 @@
+version: "3"
+services:
+  mediscreen-patient:
+    container_name: mediscreen-patient-container-1
+    image: mediscreen/patient-image
+    ports:
+      - "9101:9101"
+    networks:
+      - patient-mysql
+    environment:
+      WAIT_HOSTS: mysql
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+
+  mysqldb:
+    container_name: mysqldb
+    image: mysql
+    networks:
+      - patient-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootroot
+      - MYSQL_DATABASE=patient_p9
+    healthcheck:
+        test: "/usr/bin/mysql --user=root --password=rootroot --execute \"SHOW DATABASES;\""
+        interval: 2s
+        timeout: 20s
+        retries: 10
+
+networks:
+  patient-mysql:
