@@ -28,7 +28,7 @@ public class PatientControllerTests {
     private PatientService patientService;
 
     @Test
-    void geAllPatients() throws Exception
+    void getAllPatients() throws Exception
     {
         List<Patient> patientList = new ArrayList<>();
         patientList.add(new Patient());
