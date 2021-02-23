@@ -1,4 +1,4 @@
-package com.mediscreen.patient.repository;
+package com.mediscreen.patient.integration;
 
 import com.mediscreen.patient.service.PatientService;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SqlGroup({
         @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:insert_TestData.sql")
 })
-public class PatientRepositoryTests {
+public class PatientServiceIT {
 
     @Autowired
     PatientService patientService;
