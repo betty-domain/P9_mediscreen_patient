@@ -38,4 +38,28 @@ public class Patient {
     @NotBlank
     @Size(min = 1, max = 1, message = "Please type F or M for patient's sex")
     private String sex;
+
+    public Patient()
+    {
+
+    }
+
+    /**
+     * Constructor with params
+     * @param firstname firstname
+     * @param lastname lastname
+     * @param sex sex
+     * @param birthdate birthdate
+     * @param address address
+     * @param phone phone
+     */
+    public Patient(String firstname, String lastname, String sex, LocalDate birthdate, String address, String phone)
+    {
+        this.firstname =  firstname;
+        this.lastname = lastname;
+        this.sex = sex;
+        this.address= address;
+        this.phone = phone;
+        this.birthDate = birthdate;
+    }
 }

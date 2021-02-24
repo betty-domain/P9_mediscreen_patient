@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,15 @@ class PatientServiceTests {
 
         when(patientRepository.findAll()).thenReturn(patientList);
         assertThat(patientService.getAllPatients().size()).isEqualTo(1);
+    }
+
+    @Test
+    void addPatient_OK()
+    {
+        Patient patient = new Patient("firstname","lastname","M", LocalDate.of(2000,11,15),"address","phone");
+        when(patientRepository.save(patient)).thenReturn(patient);
+
+        assertThat(patientService.addPatient(patient)).isNotNull();
     }
 
 }
