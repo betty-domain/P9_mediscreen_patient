@@ -14,6 +14,10 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
+    /**
+     * Get all patients
+     * @return List of Patients
+     */
     @GetMapping("/patients")
     public List<Patient> getAllPatients()
     {
