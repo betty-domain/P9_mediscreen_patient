@@ -103,4 +103,25 @@ class PatientServiceTests {
         assertThat(exception.getMessage()).contains("Patient with same firstname, lastname and birthdate already exist");
     }
 
+    @Test
+    void getPatient_OK()
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,11,15),"address","phone");
+        when(patientRepository.findById(anyInt())).thenReturn(Optional.of(patient));
+
+        assertThat(patientService.getPatient(patient.getId())).isEqualTo(patient);
+    }
+
+    @Test
+    void getPatient_NotExist()
+    {
+        Patient patient = new Patient("firstname","lastname","M", LocalDate.of(2000,11,15),"address","phone");
+        when(patientRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(PatientNotFoundException.class, () -> {
+            patientService.getPatient(patient.getId());
+        });
+        assertThat(exception.getMessage()).contains("Patient not found");
+    }
+
 }

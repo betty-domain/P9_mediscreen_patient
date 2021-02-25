@@ -1,6 +1,7 @@
 package com.mediscreen.patient.controller;
 
 import com.mediscreen.patient.exceptions.PatientErrorException;
+import com.mediscreen.patient.exceptions.PatientNotFoundException;
 import com.mediscreen.patient.model.Patient;
 import com.mediscreen.patient.service.PatientService;
 import org.junit.jupiter.api.Test;
@@ -124,5 +125,35 @@ public class PatientControllerTests {
 
         mockMvc.perform(builder).
                 andExpect(status().isBadRequest());
+    }
+    @Test
+    void getPatient_StatusOk() throws Exception
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,1,15),"address","phone");
+
+        when(patientService.getPatient(patient.getId())).thenReturn(patient);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/patient").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("id",patient.getId().toString());
+
+        mockMvc.perform(builder).
+                andExpect(status().isOk());
+    }
+
+    @Test
+    void getPatient_NotFound() throws Exception
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,1,15),"address","phone");
+
+        given(patientService.getPatient(patient.getId())).willThrow(new PatientNotFoundException("Exception Message"));
+
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/patient").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("id",patient.getId().toString());
+
+        mockMvc.perform(builder).
+                andExpect(status().isNotFound());
     }
 }

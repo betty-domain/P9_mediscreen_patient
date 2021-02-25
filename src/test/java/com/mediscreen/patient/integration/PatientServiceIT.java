@@ -31,6 +31,12 @@ public class PatientServiceIT {
     }
 
     @Test
+    void getPatient()
+    {
+        assertThat(patientService.getPatient(1)).isNotNull();
+    }
+
+    @Test
     void addPatient()
     {
         Patient patient = new Patient("my new patient","lastname","F", LocalDate.of(1975,5,8),"address","phone");
