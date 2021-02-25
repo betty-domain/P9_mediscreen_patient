@@ -42,12 +42,7 @@ public class PatientService {
             logger.debug("addPatient : patient already present");
             throw new PatientErrorException("patient already present");
         } else {
-            try {
-                return patientRepository.save(patient);
-            } catch (Exception exception) {
-                logger.error("Error when adding Patient");
-                throw new PatientErrorException("Error when adding patient");
-            }
+            return patientRepository.save(patient);
         }
     }
 }
