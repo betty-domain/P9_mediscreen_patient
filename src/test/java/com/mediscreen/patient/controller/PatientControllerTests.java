@@ -84,4 +84,45 @@ public class PatientControllerTests {
         mockMvc.perform(builder).
                 andExpect(status().isBadRequest());
     }
+
+    @Test
+    void updatePatient_StatusOk() throws Exception
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,1,15),"address","phone");
+
+        when(patientService.updatePatient(patient)).thenReturn(patient);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/patient/update").
+                contentType(MediaType.APPLICATION_JSON).param("family",patient.getLastname())
+                .param("id",patient.getId().toString())
+                .param("given",patient.getFirstname())
+                .param("dob","2000-01-15")
+                .param("sex",patient.getSex())
+                .param("address",patient.getAddress())
+                .param("phone",patient.getPhone());
+
+        mockMvc.perform(builder).
+                andExpect(status().isOk());
+    }
+
+    @Test
+    void updatePatient_BadRequest() throws Exception
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,1,15),"address","phone");
+
+        given(patientService.updatePatient(patient)).willThrow(new PatientErrorException("Exception Message"));
+
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.put("/patient/update").
+                contentType(MediaType.APPLICATION_JSON).param("family",patient.getLastname())
+                .param("id",patient.getId().toString())
+                .param("given",patient.getFirstname())
+                .param("dob","2000-01-15")
+                .param("sex",patient.getSex())
+                .param("address",patient.getAddress())
+                .param("phone",patient.getPhone());
+
+        mockMvc.perform(builder).
+                andExpect(status().isBadRequest());
+    }
 }
