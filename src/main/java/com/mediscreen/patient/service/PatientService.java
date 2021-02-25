@@ -40,7 +40,7 @@ public class PatientService {
         Optional<Patient> existingPatient = patientRepository.findPatientByFirstnameAndLastnameAndBirthDateAllIgnoreCase(patient.getFirstname(), patient.getLastname(), patient.getBirthDate());
         if (existingPatient.isPresent()) {
             logger.debug("addPatient : patient already present");
-            throw new PatientErrorException("patient already present");
+            throw new PatientErrorException("Patient is already present");
         } else {
             return patientRepository.save(patient);
         }
