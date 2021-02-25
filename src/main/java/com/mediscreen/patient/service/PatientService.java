@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PatientService {
@@ -20,30 +21,33 @@ public class PatientService {
 
     /**
      * Return all existing patients
+     *
      * @return
      */
-    public List<Patient> getAllPatients()
-    {
+    public List<Patient> getAllPatients() {
         logger.debug("Call to patientService.getAllPatients");
         return patientRepository.findAll();
     }
 
     /**
      * Add patient
+     *
      * @param patient patient to add
      * @return patient if adding was sucessfull
      */
-    public Patient addPatient(Patient patient) throws PatientErrorException
-    {
+    public Patient addPatient(Patient patient) {
         logger.debug("Call to patientService.addPatient");
-        try
-        {
-            return patientRepository.save(patient);
-        }
-        catch (Exception exception)
-        {
-            logger.error("Error when adding Patient");
-            throw new PatientErrorException("Error occured when adding Patient");
+        Optional<Patient> existingPatient = patientRepository.findPatientByFirstnameAndLastnameAndBirthDateAllIgnoreCase(patient.getFirstname(), patient.getLastname(), patient.getBirthDate());
+        if (existingPatient.isPresent()) {
+            logger.debug("addPatient : patient already present");
+            throw new PatientErrorException("patient already present");
+        } else {
+            try {
+                return patientRepository.save(patient);
+            } catch (Exception exception) {
+                logger.error("Error when adding Patient");
+                throw new PatientErrorException("Error when adding patient");
+            }
         }
     }
 }

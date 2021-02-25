@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
@@ -27,6 +28,7 @@ public class Patient {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Birth Date is mandatory")
+    @Past(message = "Birth Date must be a past date")
     private LocalDate birthDate;
 
     @NotBlank(message = "Address is mandatory")

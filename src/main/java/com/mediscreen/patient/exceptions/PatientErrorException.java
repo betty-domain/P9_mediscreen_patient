@@ -10,4 +10,9 @@ public class PatientErrorException extends  RuntimeException{
         super(message);
     }
 
+    @Override
+    public synchronized Throwable fillInStackTrace() {
+        return this;
+    }
+
 }
