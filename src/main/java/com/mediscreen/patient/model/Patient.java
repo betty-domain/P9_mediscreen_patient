@@ -3,6 +3,7 @@ package com.mediscreen.patient.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,10 +21,14 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Size(max=30)
+    @Column(length=30, nullable = false)
     @NotBlank(message = "Firstname is mandatory")
     private String firstname;
 
     @NotBlank(message = "Lastname is mandatory")
+    @Column(length=60, nullable = false)
+    @Size(max=60)
     private String lastname;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -31,9 +36,13 @@ public class Patient {
     @Past(message = "Birth Date must be a past date")
     private LocalDate birthDate;
 
+    @Size(max=200)
+    @Column(length=200, nullable = false)
     @NotBlank(message = "Address is mandatory")
     private String address;
 
+    @Size(max=20)
+    @Column(length=20, nullable = false)
     @NotBlank(message = "Phone is mandatory")
     private String phone;
 
@@ -44,6 +53,12 @@ public class Patient {
     public Patient()
     {
 
+    }
+
+    public Patient(Integer id, String firstname, String lastname, String sex, LocalDate birthdate, String address, String phone)
+    {
+        this(firstname,lastname,sex,birthdate,address,phone);
+        this.id =  id;
     }
 
     /**
