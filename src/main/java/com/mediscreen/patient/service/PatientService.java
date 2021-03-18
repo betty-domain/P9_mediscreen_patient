@@ -41,6 +41,16 @@ public class PatientService {
     }
 
     /**
+     * Get patient by id
+     * @param familyName familyName of patient
+     * @return optional patient
+     */
+    public Patient getPatient(String familyName) {
+        logger.debug("Call to patientService.getPatient by familyName");
+        return patientRepository.findByLastnameIgnoreCase(familyName).orElseThrow(() -> new PatientNotFoundException("Patient not found"));
+    }
+
+    /**
      * Add patient
      *
      * @param patient patient to add
