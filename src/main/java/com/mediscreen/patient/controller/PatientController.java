@@ -36,6 +36,11 @@ public class PatientController {
         return patientService.getPatient(id);
     }
 
+    @GetMapping("/patient/familyName")
+    public Patient getPatient(@RequestParam String familyName) throws PatientNotFoundException {
+        return patientService.getPatient(familyName);
+    }
+
     @PostMapping("/patient/add")
     public Patient addPatient(@RequestParam String family, @RequestParam String given, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dob, @RequestParam String sex, @RequestParam String address, @RequestParam String phone) throws PatientErrorException{
         Patient patient = new Patient(given, family, sex, dob, address, phone);

@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Integer> {
     Optional<Patient> findPatientByFirstnameAndLastnameAndBirthDateAllIgnoreCase(String firstname, String lastname, LocalDate birthdate);
+
+    Optional<Patient> findByLastnameIgnoreCase(String lastname);
 }

@@ -156,4 +156,35 @@ public class PatientControllerTests {
         mockMvc.perform(builder).
                 andExpect(status().isNotFound());
     }
+
+    @Test
+    void getPatientByFamilyName_StatusOk() throws Exception
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,1,15),"address","phone");
+
+        when(patientService.getPatient(patient.getLastname())).thenReturn(patient);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/patient/familyName").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("familyName",patient.getLastname().toString());
+
+        mockMvc.perform(builder).
+                andExpect(status().isOk());
+    }
+
+    @Test
+    void getPatientByFamilyName_NotFound() throws Exception
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,1,15),"address","phone");
+
+        given(patientService.getPatient(patient.getLastname())).willThrow(new PatientNotFoundException("Exception Message"));
+
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/patient/familyName").
+                contentType(MediaType.APPLICATION_JSON)
+                .param("familyName",patient.getLastname().toString());
+
+        mockMvc.perform(builder).
+                andExpect(status().isNotFound());
+    }
 }

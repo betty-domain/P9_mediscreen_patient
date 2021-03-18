@@ -124,4 +124,25 @@ class PatientServiceTests {
         assertThat(exception.getMessage()).contains("Patient not found");
     }
 
+    @Test
+    void getPatientByFamilyName_OK()
+    {
+        Patient patient = new Patient(1,"firstname","lastname","M", LocalDate.of(2000,11,15),"address","phone");
+        when(patientRepository.findByLastnameIgnoreCase(anyString())).thenReturn(Optional.of(patient));
+
+        assertThat(patientService.getPatient(patient.getLastname())).isEqualTo(patient);
+    }
+
+    @Test
+    void getPatientByFamilyName_NotExist()
+    {
+        Patient patient = new Patient("firstname","lastname","M", LocalDate.of(2000,11,15),"address","phone");
+        when(patientRepository.findByLastnameIgnoreCase(anyString())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(PatientNotFoundException.class, () -> {
+            patientService.getPatient(patient.getLastname());
+        });
+        assertThat(exception.getMessage()).contains("Patient not found");
+    }
+
 }
