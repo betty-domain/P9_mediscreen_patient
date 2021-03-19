@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patient</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.patient.service</a> &gt; <span class="el_source">PatientService.java</span></div><h1>PatientService.java</h1><pre class="source lang-java linenums">package com.mediscreen.patient.service;
+
+import com.mediscreen.patient.exceptions.PatientErrorException;
+import com.mediscreen.patient.exceptions.PatientNotFoundException;
+import com.mediscreen.patient.model.Patient;
+import com.mediscreen.patient.repository.PatientRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L16">public class PatientService {</span>
+
+<span class="fc" id="L18">    private static final Logger logger = LogManager.getLogger(PatientService.class);</span>
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    /**
+     * Return all existing patients
+     *
+     * @return
+     */
+    public List&lt;Patient&gt; getAllPatients() {
+<span class="fc" id="L29">        logger.debug(&quot;Call to patientService.getAllPatients&quot;);</span>
+<span class="fc" id="L30">        return patientRepository.findAll();</span>
+    }
+
+    /**
+     * Get patient by id
+     * @param id id of patient
+     * @return optional patient
+     */
+    public Patient getPatient(Integer id) {
+<span class="fc" id="L39">        logger.debug(&quot;Call to patientService.getPatient&quot;);</span>
+<span class="fc" id="L40">        return patientRepository.findById(id).orElseThrow(() -&gt; new PatientNotFoundException(&quot;Patient not found&quot;));</span>
+    }
+
+    /**
+     * Get patient by id
+     * @param familyName familyName of patient
+     * @return optional patient
+     */
+    public Patient getPatient(String familyName) {
+<span class="fc" id="L49">        logger.debug(&quot;Call to patientService.getPatient by familyName&quot;);</span>
+<span class="fc" id="L50">        return patientRepository.findByLastnameIgnoreCase(familyName).orElseThrow(() -&gt; new PatientNotFoundException(&quot;Patient not found&quot;));</span>
+    }
+
+    /**
+     * Add patient
+     *
+     * @param patient patient to add
+     * @return patient if adding was sucessfull
+     */
+    public Patient addPatient(Patient patient) throws PatientErrorException{
+<span class="fc" id="L60">        logger.debug(&quot;Call to patientService.addPatient&quot;);</span>
+<span class="fc" id="L61">        Optional&lt;Patient&gt; existingPatient = patientRepository.findPatientByFirstnameAndLastnameAndBirthDateAllIgnoreCase(patient.getFirstname(), patient.getLastname(), patient.getBirthDate());</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (existingPatient.isPresent()) {</span>
+<span class="fc" id="L63">            logger.debug(&quot;addPatient : patient already present&quot;);</span>
+<span class="fc" id="L64">            throw new PatientErrorException(&quot;Patient is already present&quot;);</span>
+        } else {
+<span class="fc" id="L66">            return patientRepository.save(patient);</span>
+        }
+    }
+
+    /**
+     * update patient
+     * @param patient
+     * @return updated patient
+     */
+    public Patient updatePatient(Patient patient) throws PatientErrorException, PatientNotFoundException{
+<span class="fc" id="L76">        logger.debug(&quot;Call to patientService.updatePatient&quot;);</span>
+<span class="fc" id="L77">        Optional&lt;Patient&gt; patientToUpdate = patientRepository.findById(patient.getId());</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (patientToUpdate.isPresent()) {</span>
+<span class="fc" id="L79">            Optional&lt;Patient&gt; existingPatient = patientRepository.findPatientByFirstnameAndLastnameAndBirthDateAllIgnoreCase(patient.getFirstname(),patient.getLastname(),patient.getBirthDate());</span>
+<span class="pc bpc" id="L80" title="1 of 4 branches missed.">            if (existingPatient.isPresent() &amp;&amp; !existingPatient.get().getId().equals(patient.getId()))</span>
+            {
+<span class="fc" id="L82">                logger.debug(&quot;updatePatient : Patient with same firstname, lastname and birthdate already exist&quot;);</span>
+<span class="fc" id="L83">                throw new PatientErrorException(&quot;Patient with same firstname, lastname and birthdate already exist&quot;);</span>
+            }
+            else {
+<span class="fc" id="L86">                return patientRepository.save(patient);</span>
+            }
+        } else {
+<span class="fc" id="L89">            logger.debug(&quot;updatePatient : patient doesn't exist&quot;);</span>
+<span class="fc" id="L90">            throw new PatientNotFoundException(&quot;Patient not found&quot;);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

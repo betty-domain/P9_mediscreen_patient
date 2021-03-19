@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatientController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Patient</a> &gt; <a href="index.source.html" class="el_package">com.mediscreen.patient.controller</a> &gt; <span class="el_source">PatientController.java</span></div><h1>PatientController.java</h1><pre class="source lang-java linenums">package com.mediscreen.patient.controller;
+
+import com.mediscreen.patient.exceptions.PatientErrorException;
+import com.mediscreen.patient.exceptions.PatientNotFoundException;
+import com.mediscreen.patient.model.Patient;
+import com.mediscreen.patient.service.PatientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@RestController
+<span class="fc" id="L19">public class PatientController {</span>
+
+    @Autowired
+    private PatientService patientService;
+
+    /**
+     * Get all patients
+     *
+     * @return List of Patients
+     */
+    @GetMapping(&quot;/patients&quot;)
+    public List&lt;Patient&gt; getAllPatients() {
+<span class="fc" id="L31">        return patientService.getAllPatients();</span>
+    }
+
+    @GetMapping(&quot;/patient&quot;)
+    public Patient getPatient(@RequestParam Integer id) throws PatientNotFoundException {
+<span class="fc" id="L36">        return patientService.getPatient(id);</span>
+    }
+
+    @GetMapping(&quot;/patient/familyName&quot;)
+    public Patient getPatient(@RequestParam String familyName) throws PatientNotFoundException {
+<span class="fc" id="L41">        return patientService.getPatient(familyName);</span>
+    }
+
+    @PostMapping(&quot;/patient/add&quot;)
+    public Patient addPatient(@RequestParam String family, @RequestParam String given, @RequestParam @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;) LocalDate dob, @RequestParam String sex, @RequestParam String address, @RequestParam String phone) throws PatientErrorException{
+<span class="fc" id="L46">        Patient patient = new Patient(given, family, sex, dob, address, phone);</span>
+<span class="fc" id="L47">        return patientService.addPatient(patient);</span>
+    }
+
+    @PutMapping(&quot;/patient/update&quot;)
+    public Patient updatePatient(@RequestParam Integer id, @RequestParam String family, @RequestParam String given, @RequestParam @DateTimeFormat(pattern = &quot;yyyy-MM-dd&quot;) LocalDate dob, @RequestParam String sex, @RequestParam String address, @RequestParam String phone) throws PatientErrorException, PatientNotFoundException{
+<span class="fc" id="L52">        Patient patient = new Patient(id,given, family, sex, dob, address, phone);</span>
+<span class="fc" id="L53">        return patientService.updatePatient(patient);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

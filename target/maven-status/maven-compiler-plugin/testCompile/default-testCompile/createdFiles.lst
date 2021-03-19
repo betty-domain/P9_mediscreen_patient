@@ -1,0 +1,4 @@
+com\mediscreen\patient\controller\PatientControllerTests.class
+com\mediscreen\patient\integration\PatientServiceIT.class
+com\mediscreen\patient\PatientApplicationTests.class
+com\mediscreen\patient\service\PatientServiceTests.class

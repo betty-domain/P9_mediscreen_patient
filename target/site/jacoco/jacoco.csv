@@ -1,0 +1,9 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Patient,com.mediscreen.patient.config,RequestLoggingFilter,0,24,0,0,0,8,0,2,0,2
+Patient,com.mediscreen.patient.model,Patient,0,36,0,0,0,13,0,3,0,3
+Patient,com.mediscreen.patient.utils,ConverterUtils,14,3,4,0,2,1,4,1,2,1
+Patient,com.mediscreen.patient.exceptions,PatientErrorException,0,6,0,0,0,3,0,2,0,2
+Patient,com.mediscreen.patient.exceptions,PatientNotFoundException,0,6,0,0,0,3,0,2,0,2
+Patient,com.mediscreen.patient,PatientApplication,5,3,0,0,2,1,1,1,1,1
+Patient,com.mediscreen.patient.service,PatientService,0,131,1,7,0,24,1,12,0,9
+Patient,com.mediscreen.patient.controller,PatientController,0,48,0,0,0,8,0,6,0,6
